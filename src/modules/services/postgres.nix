@@ -109,9 +109,9 @@ let
       trap "remove_tmp_pg_init_sock_dir '$PGHOST'" EXIT
 
       pg_ctl -D "$PGDATA" -w start -o "-c unix_socket_directories=$PGHOST -c listen_addresses= -p ${toString cfg.port}"
+      ${runInitialScript}
       ${setupInitialDatabases}
 
-      ${runInitialScript}
       pg_ctl -D "$PGDATA" -m fast -w stop
       remove_tmp_pg_init_sock_dir "$PGHOST"
       PGHOST="$OLDPGHOST"
